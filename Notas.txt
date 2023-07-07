@@ -1,0 +1,3 @@
+Es proyecto contiene gulp.
+para iniciar con el proyecto como ya tiene package.json solo hay que instalar las dependencias con (npm i).
+Despues que instale las depenmdecia escribimos (npx gulp default) para que corra la tarrea por defecto.
