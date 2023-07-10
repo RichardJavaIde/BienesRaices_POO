@@ -1,6 +1,6 @@
 <?php 
 //Importar la conexion
-require __DIR__ . '/../config/datebase.php';
+
 $db= conectarDB();
 
 //consultas

@@ -1,6 +1,6 @@
 <?php
 // Importar la conxion
-require "includes/config/datebase.php"; 
+
 $db = conectarDB();
 
 $errores=[];
@@ -59,7 +59,7 @@ if(empty($errores)){
 }
 
 //Incluye el header
-require"includes/funciones.php";
+require "includes/app.php"; 
 incluirTemplate("header");
 ?>
     <main class="contenedor seccion contenido-centrado">
