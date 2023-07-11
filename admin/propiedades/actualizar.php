@@ -1,16 +1,13 @@
 <?php
 require"../../includes/funciones.php";
-$auth= estaAutenticado();
-if(!$auth){
-      header('location: /bienesraices_inicio/index.php');
-      
-  }
+estaAutenticado();
+
 //Validar la URL por ID Valido.
 $id = $_GET['id'];
 $id = filter_var($id,FILTER_VALIDATE_INT);
 
 if(!$id){
-  header('location: /bienesraices_inicio/admin/index.php');
+  header('location: /BienesRaices_POO/admin/index.php');
 }
 require "../../includes/config/datebase.php"; 
 $db = conectarDB();
@@ -145,7 +142,7 @@ $rtesultado = mysqli_query($db,$query);
 
 if($rtesultado){
   //echo "Datos insertados correctamente.";
-  header('location: /bienesraices_inicio/admin/index.php?resultado=2');
+  header('location: /BienesRaices_POO/admin/index.php?resultado=2');
 }
 }
 
@@ -156,7 +153,7 @@ incluirTemplate("header");
 ?>
     <main class="contenedor seccion">
       <h1>Actualizar</h1>
-      <a href="/bienesraices_inicio/admin/index.php" class="boton boton-verde">Vorver</a>
+      <a href="/BienesRaices_POO/admin/index.php" class="boton boton-verde">Vorver</a>
     
       <?php foreach($errores as $error): ?>
    <div class="alerta error">

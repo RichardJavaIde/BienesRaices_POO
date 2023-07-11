@@ -1,6 +1,6 @@
 <?php
 // Importar la conxion
-
+require "includes/app.php"; 
 $db = conectarDB();
 
 $errores=[];
@@ -43,7 +43,7 @@ if(empty($errores)){
         /* echo "<pre>";
         var_dump($_SESSION);
         echo "</pre>"; */
-      header('location: /bienesraices_inicio/admin/index.php');
+      header('location: /BienesRaices_POO/admin/index.php');
 
      }
      else{
@@ -59,7 +59,7 @@ if(empty($errores)){
 }
 
 //Incluye el header
-require "includes/app.php"; 
+
 incluirTemplate("header");
 ?>
     <main class="contenedor seccion contenido-centrado">

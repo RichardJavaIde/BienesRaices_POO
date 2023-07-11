@@ -1,17 +1,21 @@
 <?php
-require"../../includes/funciones.php";
-$auth= estaAutenticado();
-if(!$auth){
-      header('location: /bienesraices_inicio/index.php');
-      
-  }
+require"../../includes/app.php";
 
-require "../../includes/config/datebase.php"; 
+use App\Propiedad;
+$propiedad = new Propiedad;
+
+//debuguear($propiedad);
+estaAutenticado();
+/* $auth= estaAutenticado();
+if(!$auth){
+      header('location: /BienesRaices_POO/index.php');
+      
+  } */
 $db = conectarDB();
 //var_dump(conectarDB());
 
 //Consultar para obtener los vendedores
-$consulta = "SELECT *FROM vendedores;";
+$consulta = "SELECT * FROM vendedores;";
 $resultado = mysqli_query($db,$consulta);
 
 $errores=[];
@@ -118,7 +122,7 @@ $rtesultado = mysqli_query($db,$query);
 
 if($rtesultado){
   //echo "Datos insertados correctamente.";
-  header('location: /bienesraices_inicio/admin/index.php?resultado=1');
+  header('location: /BienesRaices_POO/admin/index.php?resultado=1');
 }
 }
 
@@ -128,7 +132,7 @@ incluirTemplate("header");
 ?>
     <main class="contenedor seccion">
       <h1>Crear</h1>
-      <a href="/bienesraices_inicio/admin/index.php" class="boton boton-verde">Vorver</a>
+      <a href="/BienesRaices_POO/admin/index.php" class="boton boton-verde">Vorver</a>
     
       <?php foreach($errores as $error): ?>
    <div class="alerta error">
@@ -138,7 +142,7 @@ incluirTemplate("header");
       <?php endforeach;?>
 
 
-      <form class="formulario" method="POST" action="/bienesraices_inicio/admin/propiedades/crear.php" enctype="multipart/form-data">
+      <form class="formulario" method="POST" action="/BienesRaices_POO/admin/propiedades/crear.php" enctype="multipart/form-data">
       <fieldset>
         <legend>Informacion de la propiedad</legend>
         <label for="titulo">Titulo</label>

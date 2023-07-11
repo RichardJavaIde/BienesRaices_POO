@@ -1,10 +1,7 @@
 <?php
 require"../includes/funciones.php";
-$auth= estaAutenticado();
-  if(!$auth){
-      header('location: /bienesraices_inicio/index.php');
-      
-  }
+estaAutenticado();
+ 
 
 //Improtar la coneccion a de la base de datos.
 require "../includes/config/datebase.php"; 
@@ -40,7 +37,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
  
 
     if($resultado){
-      header('location: /bienesraices_inicio/admin/index.php?resultado=3');
+      header('location: /BienesRaices_POO/admin/index.php?resultado=3');
     
     }
   }
