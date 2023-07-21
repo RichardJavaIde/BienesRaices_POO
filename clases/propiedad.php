@@ -1,6 +1,17 @@
 <?php
 namespace App;
+
+
+
 class Propiedad{
+   //variable de la base de datos.     
+   protected static $db;
+   protected static $columnasDB = ['id','titulo','precio','imagen','descripcion',
+'habitaciones','wc','estacionamiento','Creado','vendedores_id'];
+   
+    //Errores
+    protected static $errores = [];
+
     public $id;
     public $titulo;
     public $precio;
@@ -22,8 +33,88 @@ class Propiedad{
         $this->habitaciones = $args['habitaciones'] ?? '';
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
-        $this->Creado = $args['Creado'] ?? '';
+        $this->Creado = date('Y/m/d');
         $this->vendedores_id = $args['vendedores_id'] ?? '';
      }
+ public static function setDB($database){
+      self::$db= $database;
 
+     }
+     public function guardar(){
+      //Sanitizar los datos
+      $atributos = $this-> sanitizarAtributos();
+
+      
+            $query ="INSERT INTO propiedades (";
+            $query .= join(', ', array_keys($atributos));
+            $query .= ") VALUES (' ";
+            $query .= join("', '", array_values($atributos));
+            $query .= " ') ";
+          
+      $RESULTADO = self::$db->query($query);
+      return $RESULTADO;
+     }
+
+     //Subida de archivos
+     public function setImagen($imagen){
+      //Asignar al atributo de imagen el nombre de la imagen
+      if($imagen){
+         $this->imagen = $imagen;
+      }
+     }
+     //Identificar y unir los atributos de la BD
+     public function atributos(){
+      $atributos = [];
+      foreach(self::$columnasDB as $columna){
+         if($columna ==='id')continue;
+         $atributos[$columna] = $this->$columna;
+      }
+      return $atributos;
+     }
+    public function sanitizarAtributos(){
+      $atributos = $this->atributos();
+      
+      $sanitizado = [];
+      foreach($atributos as $key=> $value){
+         $sanitizado[$key] = self::$db->escape_string($value);
+      }
+      return $sanitizado;
+    }
+
+    public static function getErrores(){
+      return self::$errores;
+    }
+
+    public function validar(){
+      
+            if(!$this->titulo){
+            self::$errores[]='Titulo obligatorio.';
+            }
+
+            if(!$this->precio){
+            self::$errores[]="Precio obligatorio.";
+            }
+
+            if(($this->descripcion) < 25){
+            self::$errores[]="Descripcion obligatoria y debe de tener al menos 25 caracteres.";
+            }
+
+            if(!$this->habitaciones){
+            self::$errores[]="habitaciones obligatoria.";
+            }
+            if(!$this->wc){
+            self::$errores[]="Baños obligatoria.";
+            }
+            if(!$this->estacionamiento){
+            self::$errores[]="Estacionamiento obligatoria.";
+            }
+            if(!$this->vendedores_id){
+            self::$errores[]="Vendedor obligatoria.";
+            }
+            if(!$this->imagen){
+            self::$errores[]="La imagen es obligatiria.";
+            }
+         
+            return self::$errores;
+    }
 }

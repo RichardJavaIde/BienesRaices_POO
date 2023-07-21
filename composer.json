@@ -12,5 +12,7 @@
       "name": "Richard Duran"
     }
   ],
-  "require": {}
+  "require": {
+    "intervention/image": "^2.7"
+  }
 }
