@@ -23,3 +23,9 @@ define("CARPETA_IMAGENES",__DIR__."../../imagen/");
   echo"</pre>"; 
   exit;
  }
+
+ //Sanitisar las entrada de datos en el HTML
+ function s($html) : string{
+   $s= htmlspecialchars($html);
+   return $s;
+ }

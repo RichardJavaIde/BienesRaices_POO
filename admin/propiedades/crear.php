@@ -15,27 +15,21 @@ $resultado = mysqli_query($db,$consulta);
 
 $errores= Propiedad::getErrores();
 
-$titulo = "";
-$precio = "";
-$descripcion = "";
-$habitaciones = "";
-$wc = "";
-$estacionamiento = "";
-$vendedores_id = "";
+
 
 
 if($_SERVER["REQUEST_METHOD"]==="POST"){
   
   //Crea una nueva instacia
-  $propiedad = new Propiedad ($_POST);
+  $propiedad = new Propiedad ($_POST['propiedad']);
 
   //crear nombre unico.
 $nombreImagen = md5(uniqid(rand(),true)).".jpg";
 
   //Setear la imagen
   //Realiza un resize a la imagen con intervention
-  if($_FILES['imagen1']['tmp_name']){
-     $image = Image::make($_FILES['imagen1']['tmp_name'])->fit(800,600);
+  if($_FILES['propiedad']['tmp_name']['imagen']){
+     $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
      $propiedad->setImagen($nombreImagen);
   }
 
@@ -92,47 +86,7 @@ incluirTemplate("header");
 
 
       <form class="formulario" method="POST" action="/BienesRaices_POO/admin/propiedades/crear.php" enctype="multipart/form-data">
-      <fieldset>
-        <legend>Informacion de la propiedad</legend>
-        <label for="titulo">Titulo</label>
-        <input value="<?php echo $titulo;?>" name="titulo" type="text" id="titulo" placeholder="Titulo de la propiedad" >
-
-        <label for="precio">Precio</label>
-        <input value="<?php echo $precio; ?>" name="precio" min="1" type="number" id="precio" placeholder="Precio de la propiedad" >
-         
-        <label for="imagen">Imagen</label>
-        <input  type="file" id="imagen" accept="image/jpeg ,image/png ,image/jpg" name="imagen1">
-        
-        <label for="descripcion">Descripcion</label>
-        <textarea  name="descripcion" id="descripcion" placeholder="Detalles" ><?php echo $descripcion; ?></textarea>
-        
-      </fieldset>
-
-      <fieldset>
-        <legend>Informacion de la propiedad</legend>
-        <label for="habitaciones">Habitaciones</label>
-        <input  value="<?php echo $habitaciones; ?>" name="habitaciones" min="1" type="number" id="habitaciones" placeholder="EJ:1" >
-        
-        <label for="wc">Baños</label>
-        <input value="<?php echo $wc; ?>" name="wc" min="1" type="number" id="wc" placeholder="EJ:1" >
-
-        <label for="estacionamiento">Estacionamiento</label>
-        <input value="<?php echo $estacionamiento; ?>" name="estacionamiento" min="1" type="number" id="estacionamiento" placeholder="EJ:1" >
-
-        
-      </fieldset>
-
-      <fieldset>
-        <legend>Vendedor</legend>
-        <select name="vendedores_id" >
-          <option value="">-- Seleccionar --</option>
-        <?php while($vendedor = mysqli_fetch_assoc($resultado)):?>
-          
-            <option <?php echo $vendedores_id === $vendedor['id']? 'selected':'';?> value="<?php echo $vendedor['id']; ?>"><?php echo $vendedor['nombre']." ".$vendedor["apellido"]; ?></option>
-          <?php endwhile; ?>
-
-          </select>
-      </fieldset>
+      <?php include '../../includes/templates/formularios_propiedades.php';?>
       <input type="submit" class="boton boton-verde" value="Crear propiedad">
     </form>
     </main>

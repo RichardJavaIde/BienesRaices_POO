@@ -40,7 +40,38 @@ class Propiedad{
       self::$db= $database;
 
      }
+
+
      public function guardar(){
+      if(isset($this->id)){
+
+         $this->actulizar();
+      }else{
+         $this->guardar();
+      }
+     }
+      public function actulizar(){
+         //Sanitizar los datos
+         $atributos = $this-> sanitizarAtributos();
+
+         $valores=[];
+         foreach($atributos as $key => $value){
+            $valores[]="{$key}='{$value}'";
+         }
+ 
+            $query = "UPDATE propiedades SET ";
+            $query .= join(', ', $valores );
+            $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+            $query .= " LIMIT 1";
+
+            $resultado = self::$db->query($query);
+            
+            if($resultado){
+  //echo "Datos insertados correctamente.";
+  header('location: /BienesRaices_POO/admin/index.php?resultado=2');
+      }
+      }
+     public function crear(){
       //Sanitizar los datos
       $atributos = $this-> sanitizarAtributos();
 
@@ -57,6 +88,15 @@ class Propiedad{
 
      //Subida de archivos
      public function setImagen($imagen){
+
+      //Eliminar la imagen previa
+      if(isset($this->id)){
+      //Comprobar si existe el archivo
+      $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+      if($existeArchivo){
+         unlink(CARPETA_IMAGENES . $this->imagen);
+      }
+      }
       //Asignar al atributo de imagen el nombre de la imagen
       if($imagen){
          $this->imagen = $imagen;
@@ -117,4 +157,62 @@ class Propiedad{
          
             return self::$errores;
     }
+      //Trae todo los reguistro.
+      public static function all(){
+         
+         $query = "SELECT * FROM propiedades;";
+         $resultado = self::consultarSQL($query);
+         return $resultado;
+
+      }
+
+      //Trae un reguistro por el ID.
+      public static function find($id){
+         
+         $query = "SELECT * FROM propiedades where id = $id;";
+         $resultado = self::consultarSQL($query);
+         return array_shift($resultado);
+
+      }
+
+      public static function consultarSQL($query){
+            //consultar la base de datos
+            $resultado = self::$db->query($query);
+
+            //Iterar los resultados
+            $array = [];
+            while($registro = $resultado->fetch_assoc()){
+               $array[] = self::crearObjeto($registro);
+            }
+               
+            // liberar la memoria
+            $resultado->free();
+            // retornar los resultados
+            return $array;
+      }
+
+      protected static function crearObjeto($registro){
+         $objeto = new self;
+
+         foreach($registro as $key => $value){
+            if(property_exists($objeto, $key)){
+               $objeto->$key = $value;
+            }
+         }
+
+         
+         return $objeto;
+      }
+
+      //sincronizar el objeto en memoria con los cambios realizados por el usuario.
+      public function sincronizar ($args = []){
+
+         foreach($args as $key => $value){
+            if(property_exists($this, $key) && !is_null($value)){
+               $this->$key = $value;
+            }
+         }
+      }
+
+
 }
