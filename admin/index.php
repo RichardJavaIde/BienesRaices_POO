@@ -24,22 +24,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   //var_dump($id);
 
   if($id){
-    //Elimina la imagen que esta guardada
-    $query = "SELECT imagen FROM propiedades where id =$id";  
-    $resultado = mysqli_query($db,$query);
-    $propiedad = mysqli_fetch_assoc($resultado);
-    
-    unlink('../imagen/'.$propiedad['imagen']);
-   
-    //Elimina el registro de la base de datos
-    $query = "DELETE FROM propiedades WHERE id = $id";
-    $resultado = mysqli_query($db,$query);
- 
-
-    if($resultado){
-      header('location: /BienesRaices_POO/admin/index.php?resultado=3');
-    
-    }
+      
+      $propiedad = Propiedad::find($id);
+      $propiedad->eliminar();
+      
+         
   }
 
   }
@@ -81,9 +70,9 @@ incluirTemplate("header");
             <td>
              
               
-              <a href="propiedades/actualizar.php?id=<?php echo $propiedad ->id;?>" class="boton-amarillo-block">Actualizar</a>
+              <a href="propiedades/actualizar.php?id=<?php echo $propiedad->id;?>" class="boton-amarillo-block">Actualizar</a>
              <form method="POST"  class="w-100">
-                <input type="hidden" name="id" value="<?php echo $propiedad -> id;?>">
+                <input type="hidden" name="id" value="<?php echo $propiedad->id;?>">
                 <input type="submit" class="boton-rojo-block" value="Eliminar">
               </form>
             </td>

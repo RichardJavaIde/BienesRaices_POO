@@ -48,6 +48,11 @@ $nombreImagen = md5(uniqid(rand(),true)).".jpg";
 
 //Revisar que el array de errores este vacio
 if(empty($errores)){
+ //Almacenar la imagen
+     $image->save(CARPETA_IMAGENES . $nombreImagen);
+
+
+
 //Insertar en la base de datos
 $propiedad->guardar();
 

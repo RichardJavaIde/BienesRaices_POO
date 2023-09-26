@@ -50,6 +50,29 @@ class Propiedad{
          $this->guardar();
       }
      }
+
+     public function eliminar(){
+      //Eliminar Propiedad
+      $query= "DELETE FROM propiedades WHERE id = " . self::$db->escape_string($this->id) ." LIMIT 1";
+      
+      $resultado = self::$db->query($query);
+
+      if($resultado){
+         $this->borrarImagen();
+      header('location: /BienesRaices_POO/admin/index.php?resultado=3');
+    
+    }
+     }
+
+      //Eliminar la imagen
+      public function borrarImagen(){
+        //Comprobar si existe el archivo
+      $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+      if($existeArchivo){
+         unlink(CARPETA_IMAGENES . $this->imagen);
+      }
+      }
+
       public function actulizar(){
          //Sanitizar los datos
          $atributos = $this-> sanitizarAtributos();
@@ -91,11 +114,7 @@ class Propiedad{
 
       //Eliminar la imagen previa
       if(isset($this->id)){
-      //Comprobar si existe el archivo
-      $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
-      if($existeArchivo){
-         unlink(CARPETA_IMAGENES . $this->imagen);
-      }
+      $this->borrarImagen();
       }
       //Asignar al atributo de imagen el nombre de la imagen
       if($imagen){
