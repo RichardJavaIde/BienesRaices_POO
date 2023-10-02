@@ -25,7 +25,7 @@ class Propiedad{
 
      public function __construct($args = [])
      {
-        $this->id = $args['id'] ?? '';
+        $this->id = $args['id'] ?? null;
         $this->titulo = $args['titulo'] ?? '';
         $this->precio = $args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
@@ -43,11 +43,11 @@ class Propiedad{
 
 
      public function guardar(){
-      if(isset($this->id)){
+      if(!is_null($this->id)){
 
          $this->actulizar();
       }else{
-         $this->guardar();
+         $this->crear();
       }
      }
 
@@ -105,15 +105,18 @@ class Propiedad{
             $query .= join("', '", array_values($atributos));
             $query .= " ') ";
           
-      $RESULTADO = self::$db->query($query);
-      return $RESULTADO;
+                  $RESULTADO = self::$db->query($query);
+                  if($RESULTADO){
+            //echo "Datos insertados correctamente.";
+            header('location: /BienesRaices_POO/admin/index.php?resultado=1');
+}
      }
 
      //Subida de archivos
      public function setImagen($imagen){
 
       //Eliminar la imagen previa
-      if(isset($this->id)){
+      if(!is_null($this->id)){
       $this->borrarImagen();
       }
       //Asignar al atributo de imagen el nombre de la imagen

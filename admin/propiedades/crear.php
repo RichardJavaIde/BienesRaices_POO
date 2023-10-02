@@ -62,10 +62,7 @@ $image->save(CARPETA_IMAGENES.$nombreImagen);
 //Insertar en la base de datos
 $retesultado =  $propiedad->guardar();
 
-if($retesultado){
-  //echo "Datos insertados correctamente.";
-  header('location: /BienesRaices_POO/admin/index.php?resultado=1');
-}
+
 }
 
 }
