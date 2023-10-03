@@ -4,36 +4,16 @@ namespace App;
 class activeRecord{
      //variable de la base de datos.     
    protected static $db;
-   protected static $columnasDB = ['id','titulo','precio','imagen','descripcion',
-'habitaciones','wc','estacionamiento','Creado','vendedores_id'];
-   
+   protected static $columnasDB = [];
+
+   protected static $tabla = '';
+
     //Errores
     protected static $errores = [];
 
-    public $id;
-    public $titulo;
-    public $precio;
-    public $imagen;
-    public $descripcion;
-    public $habitaciones; 
-    public $wc;
-    public $estacionamiento;
-    public $Creado;
-    public $vendedores_id;
+    
 
-     public function __construct($args = [])
-     {
-        $this->id = $args['id'] ?? null;
-        $this->titulo = $args['titulo'] ?? '';
-        $this->precio = $args['precio'] ?? '';
-        $this->imagen = $args['imagen'] ?? '';
-        $this->descripcion = $args['descripcion'] ?? '';
-        $this->habitaciones = $args['habitaciones'] ?? '';
-        $this->wc = $args['wc'] ?? '';
-        $this->estacionamiento = $args['estacionamiento'] ?? '';
-        $this->Creado = date('Y/m/d');
-        $this->vendedores_id = $args['vendedores_id'] ?? '';
-     }
+     
  public static function setDB($database){
       self::$db= $database;
 
@@ -48,10 +28,10 @@ class activeRecord{
          $this->crear();
       }
      }
-
+      // Eliminar registro
      public function eliminar(){
-      //Eliminar Propiedad
-      $query= "DELETE FROM propiedades WHERE id = " . self::$db->escape_string($this->id) ." LIMIT 1";
+      
+      $query= "DELETE FROM " . static::$tabla . " WHERE id = " . self::$db->escape_string($this->id) ." LIMIT 1";
       
       $resultado = self::$db->query($query);
 
@@ -80,7 +60,7 @@ class activeRecord{
             $valores[]="{$key}='{$value}'";
          }
  
-            $query = "UPDATE propiedades SET ";
+            $query = "UPDATE " . static::$tabla . " SET ";
             $query .= join(', ', $valores );
             $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
             $query .= " LIMIT 1";
@@ -97,7 +77,7 @@ class activeRecord{
       $atributos = $this-> sanitizarAtributos();
 
       
-            $query ="INSERT INTO propiedades (";
+            $query ="INSERT INTO " . static::$tabla . " (";
             $query .= join(', ', array_keys($atributos));
             $query .= ") VALUES (' ";
             $query .= join("', '", array_values($atributos));
@@ -180,7 +160,7 @@ class activeRecord{
       //Trae todo los reguistro.
       public static function all(){
          
-         $query = "SELECT * FROM propiedades;";
+         $query = "SELECT * FROM " . static::$tabla;
          $resultado = self::consultarSQL($query);
          return $resultado;
 
@@ -189,7 +169,7 @@ class activeRecord{
       //Trae un reguistro por el ID.
       public static function find($id){
          
-         $query = "SELECT * FROM propiedades where id = $id;";
+         $query = "SELECT * FROM " . static::$tabla . " where id = $id;";
          $resultado = self::consultarSQL($query);
          return array_shift($resultado);
 
@@ -212,7 +192,7 @@ class activeRecord{
       }
 
       protected static function crearObjeto($registro){
-         $objeto = new self;
+         $objeto = new static;
 
          foreach($registro as $key => $value){
             if(property_exists($objeto, $key)){
