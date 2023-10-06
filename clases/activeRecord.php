@@ -105,7 +105,7 @@ class activeRecord{
      //Identificar y unir los atributos de la BD
      public function atributos(){
       $atributos = [];
-      foreach(self::$columnasDB as $columna){
+      foreach(static::$columnasDB as $columna){
          if($columna ==='id')continue;
          $atributos[$columna] = $this->$columna;
       }
@@ -122,40 +122,12 @@ class activeRecord{
     }
 
     public static function getErrores(){
-      return self::$errores;
+      return static::$errores;
     }
 
     public function validar(){
-      
-            if(!$this->titulo){
-            self::$errores[]='Titulo obligatorio.';
-            }
-
-            if(!$this->precio){
-            self::$errores[]="Precio obligatorio.";
-            }
-
-            if(($this->descripcion) < 25){
-            self::$errores[]="Descripcion obligatoria y debe de tener al menos 25 caracteres.";
-            }
-
-            if(!$this->habitaciones){
-            self::$errores[]="habitaciones obligatoria.";
-            }
-            if(!$this->wc){
-            self::$errores[]="Baños obligatoria.";
-            }
-            if(!$this->estacionamiento){
-            self::$errores[]="Estacionamiento obligatoria.";
-            }
-            if(!$this->vendedores_id){
-            self::$errores[]="Vendedor obligatoria.";
-            }
-            if(!$this->imagen){
-            self::$errores[]="La imagen es obligatiria.";
-            }
-         
-            return self::$errores;
+            static::$errores=[];            
+            return static::$errores;
     }
       //Trae todo los reguistro.
       public static function all(){
@@ -182,7 +154,7 @@ class activeRecord{
             //Iterar los resultados
             $array = [];
             while($registro = $resultado->fetch_assoc()){
-               $array[] = self::crearObjeto($registro);
+               $array[] = static::crearObjeto($registro);
             }
                
             // liberar la memoria
