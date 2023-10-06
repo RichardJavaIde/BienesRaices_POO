@@ -29,3 +29,10 @@ define("CARPETA_IMAGENES",__DIR__."../../imagen/");
    $s= htmlspecialchars($html);
    return $s;
  }
+
+ // Validad tipo de Contenido
+ function validarTipoContenido($tipo){
+
+  $tipos = ['vendedor', 'propiedad'];
+  return in_array($tipo, $tipos);
+ }
