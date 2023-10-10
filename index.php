@@ -53,8 +53,7 @@ incluirTemplate("header",$inicio);
 
       <?php 
       //Esta bariable se pasa en el include
-      $limite = 3; // para que traega solo tres reguistro.
-      include'includes/templates/anuncios.php';
+       include'includes/templates/anuncios.php';
       ?>
      
       <div class="ver-todas aliniar-derecha">

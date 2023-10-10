@@ -129,10 +129,19 @@ class activeRecord{
             static::$errores=[];            
             return static::$errores;
     }
-      //Trae todo los reguistro.
+      //Trae todo los registro.
       public static function all(){
          
          $query = "SELECT * FROM " . static::$tabla;
+         $resultado = self::consultarSQL($query);
+         return $resultado;
+
+      }
+
+       //Trae un limite de todos los registro.
+      public static function GetLimit($cantidad){
+         
+         $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $cantidad;
          $resultado = self::consultarSQL($query);
          return $resultado;
 
