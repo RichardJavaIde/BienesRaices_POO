@@ -13,7 +13,18 @@ $errores= vendedor::getErrores();
 
 
 if($_SERVER["REQUEST_METHOD"]==="POST"){
+ 
+  //crear una nueva instancia
+  $vendedor = new vendedor($_POST['vendedor']);
 
+  //Validar que no haya campos vacios
+  $errores= $vendedor->validar();
+
+  //No hay errores
+  if(empty($errores)){
+    $vendedor->guardar();
+  }
+  
 }
 
 incluirTemplate("header");
